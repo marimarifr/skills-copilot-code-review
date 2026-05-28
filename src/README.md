@@ -6,6 +6,9 @@ Uma aplicação FastAPI super simples que permite aos alunos visualizar e se ins
 
 - Visualizar todas as atividades extracurriculares disponíveis
 - Inscrever-se em atividades
+- Autenticar professores para operacoes administrativas
+- Exibir anuncios ativos no topo da interface
+- Gerenciar anuncios (listar, criar, editar e excluir) para usuarios autenticados
 
 ## Como começar
 
@@ -31,6 +34,12 @@ Uma aplicação FastAPI super simples que permite aos alunos visualizar e se ins
 | ------ | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
 | GET    | `/activities`                                                     | Obtém todas as atividades com detalhes e número atual de participantes |
 | POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Inscreve-se em uma atividade                                         |
+| POST   | `/auth/login?username=...&password=...`                          | Autentica usuario de professor/direcao                               |
+| GET    | `/announcements`                                                  | Lista anuncios ativos para exibicao publica                          |
+| GET    | `/announcements/all?teacher_username=...`                         | Lista todos os anuncios para gerenciamento (requer login)            |
+| POST   | `/announcements?message=...&expires_on=YYYY-MM-DD&teacher_username=...` | Cria um novo anuncio (inicio opcional via starts_on)            |
+| PUT    | `/announcements/{announcement_id}?message=...&expires_on=YYYY-MM-DD&teacher_username=...` | Edita um anuncio existente |
+| DELETE | `/announcements/{announcement_id}?teacher_username=...`           | Exclui um anuncio                                                    |
 
 ## Modelo de Dados
 
@@ -46,4 +55,4 @@ A aplicação usa um modelo de dados simples com identificadores significativos:
    - Nome
    - Série
 
-Todos os dados são armazenados em memória, o que significa que serão resetados quando o servidor for reiniciado.
+Os dados sao persistidos em MongoDB local (colecoes de atividades, professores e anuncios).
